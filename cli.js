@@ -7,7 +7,7 @@ var target = argv.target || argv._[0];
 var limit = argv.limit;
 
 console.log(lhc.collide({
-  algo: algorithm,
+  algorithm: algorithm,
   target: target.toString(),
   limit: limit
 }));
