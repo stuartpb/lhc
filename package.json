@@ -1,6 +1,6 @@
 {
   "name": "lhc",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Large Hashsum Collider",
   "main": "lib/lhc.js",
   "scripts": {
