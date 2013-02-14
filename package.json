@@ -1,0 +1,23 @@
+{
+  "name": "lhc",
+  "version": "0.0.0",
+  "description": "Large Hashsum Collider",
+  "main": "lib/lhc.js",
+  "scripts": {
+    "start": "cli.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/stuartpb/lhc.git"
+  },
+  "keywords": [
+    "hash",
+    "collision"
+  ],
+  "author": "Stuart P. Bentley",
+  "license": "MIT",
+  "dependencies": {
+    "optimist": "~0.3.5"
+  }
+}
