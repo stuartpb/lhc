@@ -8,6 +8,6 @@ var limit = argv.limit;
 
 console.log(lhc.collide({
   algo: algorithm,
-  target: target,
+  target: target.toString(),
   limit: limit
 }));
