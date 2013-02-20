@@ -8,8 +8,9 @@ var target = argv.target || argv._[0];
 var limit = argv.limit;
 var pre = argv.prefix || argv.pre || "";
 var suf = argv.suffix || argv.suf || "";
-var author = argv.author
+var author = argv.author;
 var date = argv.date ? new Date(argv.date) : new Date();
+var verbosity = argv.v;
 
 var internaldate = Math.floor(date.valueOf()/1000).toString() + ' ' +
   (date.getTimezoneOffset()/-0.6).toString()
@@ -39,19 +40,25 @@ q.await(function(err,username, useremail, tree, parent){
     'committer ' + committer + ' ' + internaldate + '\n' +
     '\n' + pre
 
-  var collision = lhc.collide({
-    algorithm: 'sha1',
-    target: target.toString(),
-    limit: limit,
-    pre: headpre,
-    suf: suf + '\n'
-  })
+  var collision = null;
+  var digits = 1;
+  while (collision === null) {
+    digits++;
+    collision = lhc.collide({
+      algorithm: 'sha1',
+      target: target.toString(),
+      limit: limit,
+      length: digits,
+      verbosity: verbosity,
+      pre: 'commit ' +
+        (headpre.length + digits+1 + suf.length + 1).toString(10) +
+        '\x00' + headpre,
+      suf: suf + '\n'
+    })
+  }
 
   env.GIT_AUTHOR_DATE = internaldate;
   env.GIT_COMMITTER_DATE = internaldate;
-
-  console.log('`git cat-file -p HEAD` should look like:\n'+
-  headpre+collision+suf)
 
   var commit = spawn('git',
     ['commit','-m',pre+collision+suf],
