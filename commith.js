@@ -18,7 +18,7 @@ var internaldate = Math.floor(date.valueOf()/1000).toString() + ' ' +
     .replace(/^./, function(fchar){return fchar == '-' ? '-' : '+' + fchar})
 
 var env = process.env;
-env.GIT_DIR = env.GIT_DIR || argv["git-dir"];
+if(argv["git-dir"]) env.GIT_DIR = argv["git-dir"];
 
 pre = pre.replace(/^\n*/,'');
 suf = suf.replace(/\n*$/,'');
@@ -29,12 +29,12 @@ q.defer(exec,'git config user.name',{env: env});
 q.defer(exec,'git config user.email',{env: env});
 q.defer(exec,'git write-tree',{env: env});
 q.defer(exec,'git rev-parse HEAD',{env: env});
-q.await(function(username, useremail, tree, parent){
-  var committer = username + ' <' + useremail + '>';
+q.await(function(err,username, useremail, tree, parent){
+  var committer = username.trim() + ' <' + useremail.trim() + '>';
   author = author || committer;
   var headpre =
-    'tree ' + tree + '\n' +
-    'parent ' + parent + '\n' +
+    'tree ' + tree +
+    'parent ' + parent +
     'author ' + author + ' ' + internaldate + '\n' +
     'committer ' + committer + ' ' + internaldate + '\n' +
     '\n' + pre
@@ -46,6 +46,12 @@ q.await(function(username, useremail, tree, parent){
     pre: headpre,
     suf: suf + '\n'
   })
+
+  env.GIT_AUTHOR_DATE = internaldate;
+  env.GIT_COMMITTER_DATE = internaldate;
+
+  console.log('`git cat-file -p HEAD` should look like:\n'+
+  headpre+collision+suf)
 
   var commit = spawn('git',
     ['commit','-m',pre+collision+suf],
