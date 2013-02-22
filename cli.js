@@ -33,11 +33,9 @@ if(argv.sep !== undefined) sep = argv.sep.toString();
 
 if(argv.symbols) {
   for (setsep in symbolsets) {
-    for (set in symbolsets[setsep]) {
-      if(set == argv.symbols) {
-        symbols = symbolsets[setsep][set].split(setsep)
-        if(!sep && sep !== '') sep = setsep;
-      }
+    if(symbolsets[setsep][argv.symbols]) {
+      symbols = symbolsets[setsep][argv.symbols].split(setsep)
+      if(!sep && sep !== '') sep = setsep;
     }
   }
   if(!symbols) {
