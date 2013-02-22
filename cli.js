@@ -13,18 +13,10 @@ var verbosity = argv.v;
 var mindepth = argv.min || 1;
 
 var symbolsets = {
-  '':{
-      bin: '01',
-      dec: '0123456789',
-      hex: '0123456789abcdef',
-      hexcaps: '0123456789ABCDEF'
-  },
-  ' ':{
-    nato: 'Alpha Bravo Charlie Delta Echo Foxtrot ' +
-      'Golf Hotel India Juliet Kilo Lima Mike November ' +
-      'Oscar Papa Quebec Romeo Sierra Tango Uniform ' +
-      'Victor X-ray Yankee Zulu'
-  }
+  bin: '01',
+  dec: '0123456789',
+  hex: '0123456789abcdef',
+  hexcaps: '0123456789ABCDEF'
 }
 
 var symbols, sep;
@@ -32,19 +24,16 @@ var symbols, sep;
 if(argv.sep !== undefined) sep = argv.sep.toString();
 
 if(argv.symbols) {
-  for (setsep in symbolsets) {
-    if(symbolsets[setsep][argv.symbols]) {
-      symbols = symbolsets[setsep][argv.symbols].split(setsep)
-      if(!sep && sep !== '') sep = setsep;
-    }
-  }
-  if(!symbols) {
+  if(symbolsets[argv.symbols]) {
+    symbols = symbolsets[argv.symbols].split('')
+    if(!sep && sep !== '') sep = '';
+  } else {
     symbols = fs.readFileSync(argv).toString().trim().split("\n");
     if(!sep && sep !== '') sep = ' ';
   }
 } else {
   sep = sep || '';
-  symbols = symbolsets[''].hex.split('');
+  symbols = symbolsets.hex.split('');
 }
 
 var hash = lhc.collider(algorithm,target);
