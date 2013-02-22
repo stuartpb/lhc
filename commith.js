@@ -23,28 +23,16 @@ var internaldate = Math.floor(date.valueOf()/1000).toString() + ' ' +
 var env = process.env;
 if(argv["git-dir"]) env.GIT_DIR = argv["git-dir"];
 
-var symbolsets = {
-  bin: '01',
-  dec: '0123456789',
-  hex: '0123456789abcdef',
-  hexcaps: '0123456789ABCDEF'
-}
-
 var symbols, sep;
 
 if(argv.sep !== undefined) sep = argv.sep.toString();
 
 if(argv.symbols) {
-  if(symbolsets[argv.symbols]) {
-    symbols = symbolsets[argv.symbols].split('')
-    if(!sep && sep !== '') sep = '';
-  } else {
-    symbols = fs.readFileSync(argv).toString().trim().split("\n");
-    if(!sep && sep !== '') sep = ' ';
-  }
+  symbols = fs.readFileSync(argv).toString().trim().split("\n");
+  if(!sep && sep !== '') sep = ' ';
 } else {
   sep = sep || '';
-  symbols = symbolsets.hex.split('');
+  symbols = "0123456789abcdef".split('');
 }
 
 pre = pre.replace(/^\n*/,'');
