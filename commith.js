@@ -31,6 +31,9 @@ if(argv.symbols) {
   symbols = fs.readFileSync(argv.symbols)
     .toString().trim().split("\n");
   if(!sep && sep !== '') sep = ' ';
+} else if (argv.c) {
+  sep = sep || '';
+  symbols = argv.c.split('');
 } else {
   sep = sep || '';
   symbols = "0123456789abcdef".split('');
