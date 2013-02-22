@@ -28,7 +28,8 @@ var symbols, sep;
 if(argv.sep !== undefined) sep = argv.sep.toString();
 
 if(argv.symbols) {
-  symbols = fs.readFileSync(argv).toString().trim().split("\n");
+  symbols = fs.readFileSync(argv.symbols)
+    .toString().trim().split("\n");
   if(!sep && sep !== '') sep = ' ';
 } else {
   sep = sep || '';
